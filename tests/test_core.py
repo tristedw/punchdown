@@ -83,6 +83,17 @@ class IdentifyTests(unittest.TestCase):
         host = {"ip": "192.168.1.2", "vendor": "Ubiquiti", "ports": []}
         self.assertEqual(identify.classify(host, "192.168.1.1", None)[0], "access-point")
 
+    def test_mac_airplay_is_not_a_nas(self):
+        host = {"ip": "192.168.1.72", "randomized_mac": True, "mdns": "Emmas-MacBook-Pro.local",
+                "ports": [{"port": p, "state": "open"} for p in (445, 5000, 5900, 7000)]}
+        self.assertEqual(identify.classify(host, "192.168.1.1", None)[0], "computer")
+
+    def test_appliance_and_extender(self):
+        dryer = {"ip": "192.168.1.142", "vendor": "LG Innotek", "hostname": "LG_Smart_Dryer2_open"}
+        self.assertEqual(identify.classify(dryer, "192.168.1.1", None)[0], "iot")
+        boost = {"ip": "192.168.1.21", "vendor": "Vantiva Technologies Belgium", "hostname": "Boost2-526d"}
+        self.assertEqual(identify.classify(boost, "192.168.1.1", None)[0], "access-point")
+
     def test_nothing_known(self):
         self.assertEqual(identify.classify({"ip": "192.168.1.99"}, "192.168.1.1", None)[0], "unknown")
 

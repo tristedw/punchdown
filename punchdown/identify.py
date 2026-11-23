@@ -79,15 +79,15 @@ VENDOR_RULES: List[Tuple[str, str, int]] = [
     (r"nintendo|sony interactive|microsoft.*xbox|valve", "console", 5),
     (r"synology|qnap|western digital|seagate|buffalo|asustor|terramaster", "nas", 6),
     (r"hewlett|hp inc|brother|epson|canon|lexmark|xerox|kyocera|ricoh|zebra", "printer", 4),
-    (r"espressif|tuya|shelly|sonoff|itead|signify|philips lighting|lifx|wyze|ecobee|"
-     r"nest labs|google.*nest|tp-link.*kasa|belkin|wemo|chamberlain|myq|ring|amazon technologies|"
+    (r"espressif|tuya|shelly|sonoff|itead|signify|philips lighting|lifx|wyze|ecobee|lg innotek|"
+     r"nest labs|google.*nest|tp-link.*kasa|belkin|wemo|chamberlain|myq|ring|amazon|"
      r"texas instruments|silicon labs|murata|azurewave|universal global|hui zhou gaoshengda|"
      r"particle|arduino|tado|netatmo|irobot|ecovacs", "iot", 3),
     (r"hikvision|dahua|axis communications|reolink|amcrest|arlo|eufy|anker", "camera", 5),
     (r"raspberry pi", "server", 3),
     (r"ubiquiti|aruba|ruckus|meraki|cambium|eero|plume|tp-link|netgear|asustek|linksys|"
      r"d-link|mikrotik|zyxel|technicolor|sagemcom|arris|commscope|calix|actiontec|"
-     r"huawei|zte|nokia|fritz|avm", "router", 2),
+     r"huawei|zte|nokia|fritz|avm|vantiva|arcadyan|sercomm|askey|hitron|ubee", "router", 2),
     (r"apple", "computer", 1),
     (r"intel|dell|lenovo|micro-star|msi|gigabyte|asrock|realtek|liteon|hon hai|foxconn|"
      r"framework|microsoft|vmware|parallels|qemu|xensource|super micro", "computer", 2),
@@ -99,7 +99,10 @@ NAME_RULES: List[Tuple[str, str, int]] = [
     (r"ipad|tab-|kindle|fire-?hd|surface-go", "tablet", 6),
     (r"macbook|imac|mac-?mini|mac-?studio|desktop-|laptop|thinkpad|-pc\b|^pc-|workstation", "computer", 6),
     (r"roku|chromecast|appletv|apple-tv|firetv|fire-tv|bravia|webos|lgwebostv|samsung.*tv|shield", "tv", 6),
-    (r"sonos|homepod|echo|alexa|google-home|nest-?(mini|audio|hub)", "speaker", 6),
+    (r"sonos|homepod|echo|alexa|google-home|nest-?(mini|audio|hub)|bose|soundtouch|denon|heos", "speaker", 6),
+    (r"lg_smart|smart_?(dryer|oven|laundry|washer|fridge|ac)|dryer|washer|dishwasher|fridge|oven", "iot", 6),
+    (r"boost|extender|repeater|satellite|-ap\b", "access-point", 6),
+    (r"watch", "phone", 5),
     (r"printer|laserjet|officejet|deskjet|envy|epson|brn[0-9a-f]{6}|canon", "printer", 6),
     (r"synology|diskstation|qnap|nas\b|truenas|unraid|freenas", "nas", 6),
     (r"xbox|playstation|ps[45]|nintendo|switch|steamdeck|steam-deck", "console", 6),
@@ -115,9 +118,10 @@ PORT_RULES: List[Tuple[Tuple[int, ...], str, int, str]] = [
     ((62078,), "phone", 6, "iPhone sync port open"),
     ((8008, 8009), "tv", 4, "Google Cast ports open"),
     ((6466,), "tv", 5, "Android TV remote port open"),
-    ((7000, 7100), "tv", 2, "AirPlay receiver"),
+    ((7100,), "tv", 2, "AirPlay screen mirroring"),
     ((1400,), "speaker", 7, "Sonos control port open"),
-    ((5000, 5001), "nas", 4, "Synology DSM ports open"),
+    ((5001,), "nas", 4, "Synology DSM port open"),
+    ((7000,), "computer", 1, "AirPlay receiver"),
     ((548,), "nas", 3, "AFP file sharing"),
     ((32400,), "server", 4, "Plex server"),
     ((8123,), "server", 5, "Home Assistant"),

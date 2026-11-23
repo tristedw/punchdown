@@ -198,8 +198,15 @@ class Scan:
         if me and ipaddress.ip_address(me) in self.subnet:
             self._found(me, 0.0, "this machine")
 
+        # Find the gateway first so the map has a centre to hang things off
+        # while the rest of the sweep is still running.
+        gw = self.info["gateway"]
+        first = [gw] if gw in addrs and gw != me else []
+        for ip in first:
+            self._discover(ip)
+
         with ThreadPoolExecutor(max_workers=64) as pool:
-            list(pool.map(self._discover, [a for a in addrs if a != me]))
+            list(pool.map(self._discover, [a for a in addrs if a != me and a not in first]))
         if me in addrs:
             self.emit({"type": "probe", "ip": me, "alive": True})
 

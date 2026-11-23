@@ -15,7 +15,7 @@ from pathlib import Path
 SUFFIX = re.compile(
     r"[,.]?\s+(inc|incorporated|corp|corporation|co|company|ltd|limited|llc|gmbh|"
     r"ag|sa|s\.a|bv|b\.v|plc|pty|oy|ab|as|srl|spa|kk|technologies|technology|"
-    r"electronics|international)\.?$",
+    r"electronics|international|corporate)\.?$",
     re.I,
 )
 
