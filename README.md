@@ -57,7 +57,7 @@ view, search (`/`), and export to JSON, CSV or an SVG of the map.
 
 ## Running it
 
-Needs Python 3.9 or newer. No packages.
+Needs Python 3.10 or newer. No packages.
 
 ```bash
 git clone https://github.com/tristedw/punchdown
