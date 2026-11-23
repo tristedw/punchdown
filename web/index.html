@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Pages can't send headers, so the CSP rides along here too. The python
+       server sends the same policy as a real header. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <title>punchdown</title>
+  <meta name="description" content="Map the devices on your home network from a browser tab. Runs entirely on your machine.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/app.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <a class="mark" href="./" aria-label="punchdown home">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 10v4M10 10v4M14 10v4M18 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      punchdown
+    </a>
+
+    <form class="scan-form" id="scanForm" autocomplete="off">
+      <label for="subnet">Subnet</label>
+      <input id="subnet" name="subnet" list="subnets" spellcheck="false" inputmode="decimal" placeholder="192.168.1.0/24">
+      <datalist id="subnets"></datalist>
+      <label class="depth" title="Thorough checks about 40 ports per device. Quick checks 13.">
+        <input type="checkbox" id="thorough" checked> Thorough
+      </label>
+      <button class="btn primary" id="scanBtn" type="submit">Scan network</button>
+    </form>
+
+    <div class="views" role="tablist" aria-label="View">
+      <button role="tab" id="tabMap" aria-selected="true" aria-controls="stage" data-view="map">Map</button>
+      <button role="tab" id="tabList" aria-selected="false" aria-controls="stage" data-view="list">List</button>
+    </div>
+
+    <div class="find">
+      <input type="search" id="search" placeholder="Find a device" aria-label="Find a device" aria-keyshortcuts="/">
+      <kbd aria-hidden="true">/</kbd>
+    </div>
+
+    <details class="export">
+      <summary class="btn">Export</summary>
+      <div class="menu" role="menu">
+        <button role="menuitem" data-export="json">Devices as JSON</button>
+        <button role="menuitem" data-export="csv">Devices as CSV</button>
+        <button role="menuitem" data-export="svg">Map as SVG</button>
+      </div>
+    </details>
+  </header>
+
+  <p class="demo-note" id="demoNote" hidden>
+    You're looking at a made-up house. Nothing here touched your network.
+    <a href="https://github.com/tristedw/punchdown#running-it" rel="noopener noreferrer">Run it on your own machine</a> to map yours.
+  </p>
+
+  <section class="rack" aria-label="Patch panel, one jack per address">
+    <div class="rack-face">
+      <div class="silk">
+        <span class="silk-subnet" id="silkSubnet">no subnet</span>
+        <span class="silk-progress" id="silkProgress" aria-live="polite"></span>
+        <button class="silk-toggle" id="panelToggle" type="button" aria-expanded="true" aria-controls="ports">Hide jacks</button>
+      </div>
+      <div class="ports" id="ports"></div>
+    </div>
+  </section>
+
+  <main class="work">
+    <section class="stage" id="stage" aria-label="Devices">
+      <div class="map-tools" id="mapTools">
+        <button class="tool" data-act="fit" title="Fit to screen (F)">Fit</button>
+        <button class="tool" data-act="add-switch">Add switch</button>
+        <button class="tool" data-act="add-ap">Add access point</button>
+        <label class="tool check"><input type="checkbox" id="showOffline"> Offline devices</label>
+        <label class="tool check"><input type="checkbox" id="watchAll"> Live latency</label>
+      </div>
+      <div class="map" id="map"></div>
+      <div class="table-wrap" id="table" hidden></div>
+      <div class="empty" id="empty">
+        <h2>Nothing mapped yet</h2>
+        <p id="emptyText">Scan your subnet to see what's plugged in. Everything stays on this machine.</p>
+        <button class="btn primary" id="emptyScan" type="button">Scan network</button>
+      </div>
+      <div class="locked" id="locked" hidden>
+        <h2>This tab doesn't have a session</h2>
+        <p>Open the link punchdown printed in your terminal. It carries a one time key so other websites can't use the scanner through your browser.</p>
+        <a class="btn" href="?demo">Look at the demo house instead</a>
+      </div>
+      <div class="legend" aria-label="Cable colour legend">
+        <span><i class="sw good"></i>under 8 ms</span>
+        <span><i class="sw fair"></i>8 to 40 ms</span>
+        <span><i class="sw slow"></i>over 40 ms</span>
+        <span><i class="sw lost"></i>dropping pings</span>
+      </div>
+    </section>
+
+    <aside class="inspector" id="inspector" aria-label="Device details"></aside>
+  </main>
+
+  <footer class="status" id="status"></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
