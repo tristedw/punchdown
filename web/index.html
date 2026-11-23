@@ -14,7 +14,7 @@
   <script type="module" src="js/app.js"></script>
 </head>
 <body>
-  <header class="bar">
+  <header class="topbar">
     <a class="mark" href="./" aria-label="punchdown home">
       <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 10v4M10 10v4M14 10v4M18 10v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       punchdown
@@ -50,11 +50,6 @@
     </details>
   </header>
 
-  <p class="demo-note" id="demoNote" hidden>
-    You're looking at a made-up house. Nothing here touched your network.
-    <a href="https://github.com/tristedw/punchdown#running-it" rel="noopener noreferrer">Run it on your own machine</a> to map yours.
-  </p>
-
   <section class="rack" aria-label="Patch panel, one jack per address">
     <div class="rack-face">
       <div class="silk">
@@ -78,14 +73,14 @@
       <div class="map" id="map"></div>
       <div class="table-wrap" id="table" hidden></div>
       <div class="empty" id="empty">
-        <h2>Nothing mapped yet</h2>
-        <p id="emptyText">Scan your subnet to see what's plugged in. Everything stays on this machine.</p>
+        <h2>No devices yet</h2>
+        <p id="emptyText">Scan a subnet to map it.</p>
         <button class="btn primary" id="emptyScan" type="button">Scan network</button>
       </div>
       <div class="locked" id="locked" hidden>
-        <h2>This tab doesn't have a session</h2>
-        <p>Open the link punchdown printed in your terminal. It carries a one time key so other websites can't use the scanner through your browser.</p>
-        <a class="btn" href="?demo">Look at the demo house instead</a>
+        <h2>No session key</h2>
+        <p>Open the link punchdown printed in the terminal.</p>
+        <a class="btn" href="?demo">Open demo</a>
       </div>
       <div class="legend" aria-label="Cable colour legend">
         <span><i class="sw good"></i>under 8 ms</span>

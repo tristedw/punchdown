@@ -82,7 +82,7 @@ h2, h3 { margin: 0; }
 
 /* header ------------------------------------------------------------------- */
 
-.bar {
+.topbar {
   display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
   padding: 10px 20px;
 }
@@ -126,12 +126,6 @@ h2, h3 { margin: 0; }
 }
 .export .menu button { text-align: left; background: none; border: 0; padding: 8px 10px; border-radius: 3px; cursor: pointer; font-size: 13px; }
 .export .menu button:hover { background: var(--surface); }
-
-.demo-note {
-  margin: 0 20px 10px; padding: 8px 12px;
-  background: var(--white); border-left: 3px solid var(--fair);
-  font-size: 13px; color: var(--ink-2);
-}
 
 /* the patch panel ---------------------------------------------------------- */
 
@@ -416,7 +410,7 @@ body.is-scanning .map-tools .tool[data-act^="add"] { opacity: 0.5; pointer-event
 
 @media (max-width: 960px) {
   body { display: block; }
-  .bar { gap: 10px 14px; padding: 10px 14px; }
+  .topbar { gap: 10px 14px; padding: 10px 14px; }
   .find { margin-left: 0; flex: 1 1 160px; }
   .find input { width: 100%; }
   .scan-form { flex-wrap: wrap; width: 100%; }

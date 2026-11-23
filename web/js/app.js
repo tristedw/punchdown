@@ -51,7 +51,6 @@ async function boot() {
     renderInspector();
     return;
   }
-  $('#demoNote').hidden = mode !== 'demo';
 
   try {
     S.info = await api.info();
@@ -68,8 +67,8 @@ async function boot() {
   $('#subnets').innerHTML = [...subs].map((n) => `<option value="${esc(n)}">`).join('');
   $('#subnet').value = S.info.default_subnet || '';
   $('#emptyText').textContent = S.info.default_subnet
-    ? `Scan ${S.info.default_subnet} to see what's plugged in. Everything stays on this machine.`
-    : "Couldn't work out your subnet. Type one in above, like 192.168.1.0/24.";
+    ? `Scan ${S.info.default_subnet} to map it.`
+    : "Couldn't detect a subnet. Enter one above, like 192.168.1.0/24.";
 
   if (mode === 'local') {
     const st = await api.state().catch(() => null);
@@ -231,7 +230,7 @@ function buildGraph() {
   }
   if (rootId) {
     for (const x of S.extras) {
-      nodes.push({ id: x.id, kind: x.kind, title: x.name || KIND_NAMES[x.kind], sub: 'added by you', extra: true, pinned: S.layout[x.id] || null });
+      nodes.push({ id: x.id, kind: x.kind, title: x.name || KIND_NAMES[x.kind], sub: 'manual', extra: true, pinned: S.layout[x.id] || null });
       const parent = resolve(S.links[x.id]);
       edges.push({ source: parent === x.id ? rootId : parent, target: x.id, band: 'none' });
     }
@@ -300,9 +299,7 @@ function renderScanState() {
 function renderStatus() {
   const hosts = [...S.hosts.values()];
   if (!hosts.length) {
-    $('#status').innerHTML = S.mode === 'demo'
-      ? '<span>Demo mode. Fake devices, no network traffic.</span>'
-      : '<span>Bound to 127.0.0.1. No data leaves this machine.</span>';
+    $('#status').innerHTML = `<span class="right">${S.mode === 'demo' ? 'demo data' : '127.0.0.1'}</span>`;
     return;
   }
   const gw = hosts.find((h) => h.is_gateway);
@@ -399,7 +396,6 @@ function overview(el) {
         <dt>Subnet</dt><dd>${esc(S.info?.default_subnet || 'not found')}</dd>
         <dt>Remembered</dt><dd>${S.known.size} devices</dd>
       </dl>
-      <p class="muted">A scan pings every address, knocks on a few common ports, then asks each device what it is over mDNS, NetBIOS, UPnP and your router's DNS. None of it goes past your router.</p>
     </div>`;
     return;
   }
@@ -413,7 +409,7 @@ function overview(el) {
   const list = (arr, fmt) => arr.map((h) => `<li><button class="link-row" data-ip="${h.ip}">${glyph(h.kind, 15)}<span>${esc(displayName(h))}</span><span class="r">${fmt(h)}</span></button></li>`).join('');
   el.innerHTML = `<div class="insp-body">
     <h2 class="insp-title">${esc(S.scanning ? 'Scanning' : 'Your network')}</h2>
-    <p class="muted">${hosts.length} devices on ${esc($('#silkSubnet').textContent)}. Pick one on the map or a lit jack above.</p>
+    <p class="muted">${hosts.length} devices on ${esc($('#silkSubnet').textContent)}</p>
     <h3>What's here</h3>
     <ul class="kinds">${kinds}</ul>
     ${fresh.length ? `<h3>New since last time</h3><ul class="rows">${list(fresh, (h) => esc(h.ip))}</ul>` : ''}
@@ -482,7 +478,7 @@ function inspectHost(el, h) {
       <div><dt>avg</dt><dd>${esc(ms(st.avg))}</dd></div>
       <div><dt>jitter</dt><dd>${st.jitter != null ? esc(ms(st.jitter)) : 'n/a'}</dd></div>
       <div><dt>loss</dt><dd class="${st.loss > 0.05 ? 'bad' : ''}">${Math.round(st.loss * 100)}%</dd></div>
-    </dl>` : `<p class="muted small">${watching ? 'Collecting pings.' : 'Watch latency to ping it once a second.'}</p>`}
+    </dl>` : `<p class="muted small">${watching ? 'Collecting pings.' : 'Not watching.'}</p>`}
 
     <h3>Identity</h3>
     <dl class="facts">
@@ -494,7 +490,7 @@ function inspectHost(el, h) {
       ${fact('DNS name', esc(h.hostname || ''))}
       ${fact('NetBIOS', esc(h.netbios || ''))}
       ${fact('Web page', web)}
-      ${fact('Found by', esc(h.found_by === 'arp only' ? 'ARP only. It ignores ping and every port we tried.' : h.found_by || ''))}
+      ${fact('Found by', esc(h.found_by === 'arp only' ? 'ARP only' : h.found_by || ''))}
       ${fact('First seen', esc(ago(h.first_seen)))}
     </dl>
 
@@ -522,7 +518,6 @@ function inspectExtra(el, x) {
       <div><span class="insp-name">${esc(x.name || KIND_NAMES[x.kind])}</span><p class="insp-kind">${esc(KIND_NAMES[x.kind])}, added by you</p></div>
       <button class="icon-btn" data-act="close" aria-label="Close details">&times;</button>
     </div>
-    <p class="muted">Unmanaged switches and dumb access points don't have an IP, so a scan can't see them. Add them here and plug devices into them from each device's details.</p>
     <label class="field">Name <input data-act="extra-name" maxlength="40" value="${esc(x.name || '')}"></label>
     <label class="parent">Plugged into <select data-act="parent">${parentOptions(x.id, S.links[x.id])}</select></label>
     <div class="actions quiet"><button class="btn danger" data-act="extra-remove">Remove ${esc(KIND_NAMES[x.kind].toLowerCase())}</button></div>
@@ -600,7 +595,7 @@ async function inspectorAction(act, target) {
       delete S.layout[key];
       delete S.links[key];
       if (h) { h.label = null; h.new = true; }
-      toast('Forgotten. It will show as new next scan.');
+      toast('Forgotten.');
       select(null);
       return render();
     }
