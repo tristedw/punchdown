@@ -85,7 +85,7 @@ through devices, `w` watch the selected one, `Esc` to close.
 This was the part I cared about most, since a network scanner is exactly the
 kind of thing you don't want leaking.
 
-* **Nothing goes to the internet.** No CDN, no fonts from Google, no analytics,
+* **Nothing goes to the internet.** No CDN, no Google Fonts (Poppins is bundled), no analytics,
   no update check. Every probe goes to an address inside the private range
   you're scanning, or to the local multicast groups (SSDP, mDNS) which are
   link-local and sent with TTL 1.
@@ -143,7 +143,7 @@ punchdown/
   data/         oui.tsv.gz
 web/
   js/           vanilla ES modules, no build step
-  css/ fonts/   Barlow, self hosted
+  css/ fonts/   Poppins, self hosted
 tests/          python -m unittest discover -s tests
 scripts/        build_oui.py regenerates the vendor table
 ```
@@ -167,7 +167,7 @@ python3 scripts/build_oui.py package/index.json
 
 ## Licence
 
-MIT, see [LICENSE](./LICENSE). Barlow is under the SIL Open Font License, see
+MIT, see [LICENSE](./LICENSE). Poppins is under the SIL Open Font License, see
 `web/fonts/OFL.txt`. OUI data is from the IEEE registry via the
 [oui-data](https://www.npmjs.com/package/oui-data) package.
 

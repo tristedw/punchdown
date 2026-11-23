@@ -30,7 +30,7 @@ export function drawSpark(canvas, samples, slots = 60) {
   ctx.stroke();
 
   ctx.fillStyle = COLORS.text;
-  ctx.font = '500 10px Barlow, sans-serif';
+  ctx.font = '500 10px Poppins, sans-serif';
   ctx.textBaseline = 'top';
   ctx.fillText(`${Math.round(top)} ms`, 0, 0);
   ctx.textBaseline = 'alphabetic';

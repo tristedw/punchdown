@@ -701,8 +701,8 @@ function exportAs(kind) {
     if (S.view !== 'map') setView('map');
     const css = `.cable{fill:none;stroke-width:2.2;stroke:#9aa3ac}.band-good{stroke:#2f8a4e}.band-fair{stroke:#d9731a}.band-slow{stroke:#7a4e2d}.is-lost{stroke:#c23a2b}
       .disc{fill:#fff;stroke:#1a2230;stroke-width:1.5}.icon{color:#1a2230}.is-root .disc{fill:#1a2230}.is-root .icon{color:#fff}
-      text{font-family:Barlow,Arial,sans-serif}.title{font-weight:600;font-size:12.5px;fill:#1a2230}.sub{font-size:10.5px;fill:#5b6672}
-      .tape rect{fill:#1a2230}.tape text{fill:#fff;font-weight:600;font-size:11px}.tape-orange rect{fill:#c25e0c}.tape-green rect{fill:#2f8a4e}.tape-blue rect{fill:#2b5da6}.tape-brown rect{fill:#7a4e2d}.new-dot{fill:#d9731a}`;
+      text{font-family:Poppins,Arial,sans-serif}.title{font-weight:600;font-size:11.5px;fill:#1a2230}.sub{font-size:9.5px;fill:#5b6672}
+      .tape rect{fill:#1a2230}.tape text{fill:#fff;font-weight:600;font-size:10.5px}.tape-orange rect{fill:#c25e0c}.tape-green rect{fill:#2f8a4e}.tape-blue rect{fill:#2b5da6}.tape-brown rect{fill:#7a4e2d}.new-dot{fill:#d9731a}`;
     download(`punchdown-map-${stamp}.svg`, topo.toSVG(css), 'image/svg+xml');
   }
   $('.export').open = false;
